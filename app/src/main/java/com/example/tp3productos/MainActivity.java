@@ -49,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_cargar,
-                R.id.nav_reflow,
-                R.id.nav_slideshow,
-                R.id.nav_settings
+                R.id.nav_listar
         )
                 .setOpenableLayout(binding.drawerLayout)
                 .build();
@@ -64,6 +62,20 @@ public class MainActivity extends AppCompatActivity {
         if (binding.appBarMain.contentMain.bottomNavView != null) {
             NavigationUI.setupWithNavController(binding.appBarMain.contentMain.bottomNavView, navController);
         }
+
+        // NAVEGACION DEL BOTON EN FRAGMENT LISTAR
+
+        binding.appBarMain.fab.setOnClickListener(v -> {
+            binding.appBarMain.contentMain.bottomNavView.setSelectedItemId(R.id.nav_cargar);
+        });
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.nav_listar) {
+                binding.appBarMain.fab.show();
+            } else {
+                binding.appBarMain.fab.hide();
+            }
+        });
     }
 
     @Override
@@ -80,14 +92,6 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.nav_settings) {
-            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-            navController.navigate(R.id.nav_settings);
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public boolean onSupportNavigateUp() {
