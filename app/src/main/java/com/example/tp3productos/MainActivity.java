@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -63,11 +64,14 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(binding.appBarMain.contentMain.bottomNavView, navController);
         }
 
+
+
         // NAVEGACION DEL BOTON EN FRAGMENT LISTAR
 
         binding.appBarMain.fab.setOnClickListener(v -> {
             binding.appBarMain.contentMain.bottomNavView.setSelectedItemId(R.id.nav_cargar);
         });
+
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.nav_listar) {
@@ -76,8 +80,31 @@ public class MainActivity extends AppCompatActivity {
                 binding.appBarMain.fab.hide();
             }
         });
-    }
 
+        // DIALOG SALIR APLICACION
+        binding.navView.setNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.nav_salir) {
+                mostrarDialogSalir();
+                binding.drawerLayout.closeDrawers();
+                return true;
+            }
+
+            boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
+            if (handled) {
+                binding.drawerLayout.closeDrawers();
+            }
+            return handled;
+        });
+
+    }
+    private void mostrarDialogSalir() {
+        new AlertDialog.Builder(this)
+                .setTitle("Salir")
+                .setMessage("¿Seguro que querés salir de la aplicación?")
+                .setPositiveButton("Sí", (dialog, which) -> finishAffinity())
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
