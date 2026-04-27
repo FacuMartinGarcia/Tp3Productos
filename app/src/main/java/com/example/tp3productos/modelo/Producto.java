@@ -8,13 +8,12 @@ public class Producto {
     private String descripcion;
     private double precio;
 
+    private static final ArrayList<Producto> listaProductos = new ArrayList<>();
 
-    private static ArrayList<Producto> listaProductos = new ArrayList<>();
-
+    // ==================== CONSTRUCTORES ====================
 
     public Producto() {
     }
-
 
     public Producto(int codigo, String descripcion, double precio) {
         this.codigo = codigo;
@@ -22,6 +21,7 @@ public class Producto {
         this.precio = precio;
     }
 
+    // ==================== GETTERS Y SETTERS ====================
 
     public int getCodigo() {
         return codigo;
@@ -47,16 +47,40 @@ public class Producto {
         this.precio = precio;
     }
 
-    public static void agregarProducto(Producto p) {
-        listaProductos.add(p);
+    // ==================== MÉTODOS ESTÁTICOS (LÓGICA DE DATOS) ====================
+
+    /**
+     * Agrega un producto a la lista si el código no está repetido.
+     * @return true si se agregó correctamente, false si el código ya existe
+     */
+    public static boolean agregarProducto(Producto nuevoProducto) {
+        // Validación: código no repetido
+        for (Producto p : listaProductos) {
+            if (p.getCodigo() == nuevoProducto.getCodigo()) {
+                return false; // Código duplicado
+            }
+        }
+
+        listaProductos.add(nuevoProducto);
+        return true;
     }
 
-    public static void listarProductos() {
-        for (Producto p : listaProductos) {
-            System.out.println("Código: " + p.getCodigo());
-            System.out.println("Descripción: " + p.getDescripcion());
-            System.out.println("Precio: $" + p.getPrecio());
-            System.out.println("-------------------------");
-        }
+    /**
+     * Devuelve una copia de la lista ordenada alfabéticamente por descripción
+     */
+    public static ArrayList<Producto> getListaProductos() {
+        // Ordenamos la lista por descripción
+        listaProductos.sort((p1, p2) ->
+                p1.getDescripcion().compareToIgnoreCase(p2.getDescripcion()));
+
+        // Devolvemos una copia para evitar que modifiquen la lista original desde afuera
+        return new ArrayList<>(listaProductos);
+    }
+
+    /**
+     * Limpia toda la lista
+     */
+    public static void limpiarLista() {
+        listaProductos.clear();
     }
 }
