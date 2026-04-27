@@ -77,12 +77,4 @@ public class CargarFragment extends Fragment {
         binding = null;
     }
 
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(CargarViewModel.class);
-        // TODO: Use the ViewModel
-    }
-
 }
