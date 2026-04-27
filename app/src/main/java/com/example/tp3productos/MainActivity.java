@@ -44,8 +44,27 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.appBarMain.toolbar);
 
-        Producto e = new Producto(1, "Hamburguesas Paty", 22);
-        productos.add(e);
+        // Producto e = new Producto(1, "Hamburguesas Paty", 22);
+        // productos.add(e);
+
+        String[] nombres = {
+                "Hamburguesas Paty",
+                "Papas Fritas",
+                "Pizza Muzzarella",
+                "Lomo Completo",
+                "Empanadas de Carne",
+                "Gaseosa 500ml",
+                "Tostado de Jamón y Queso",
+                "Ensalada Mixta",
+                "Helado Americano",
+                "Tarta de Verdura"
+        };
+
+        int[] precios = {22, 15, 30, 28, 18, 10, 16, 14, 12, 20};
+
+        for (int i = 0; i < nombres.length; i++) {
+            productos.add(new Producto(i + 1, nombres[i], precios[i]));
+        }
 
         /*      TOTON AGREGAR PRODUCTO?
         if (binding.appBarMain.fab != null) {

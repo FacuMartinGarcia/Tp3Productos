@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tp3productos.MainActivity;
 import com.example.tp3productos.databinding.FragmentListarBinding;
 import com.example.tp3productos.R;
-import com.example.tp3productos.databinding.ItemListarBinding;
+import com.example.tp3productos.databinding.ItemProductoBinding;
 import com.example.tp3productos.modelo.Producto;
 import com.example.tp3productos.ui.ProductoAdapter;
 

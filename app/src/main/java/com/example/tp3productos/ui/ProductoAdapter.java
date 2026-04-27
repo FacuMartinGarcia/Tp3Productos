@@ -7,7 +7,7 @@ import android.widget.AdapterView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tp3productos.databinding.ItemListarBinding;
+import com.example.tp3productos.databinding.ItemProductoBinding;
 import com.example.tp3productos.modelo.Producto;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
     public ViewHolderProducto onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ItemListarBinding binding = ItemListarBinding.inflate(inflater, parent, false);
+        ItemProductoBinding binding = ItemProductoBinding.inflate(inflater, parent, false);
 
         return new ViewHolderProducto(binding);
 
@@ -43,6 +43,7 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
 
         holder.binding.TvCodigo.setText(String.valueOf(p.getCodigo()));
         holder.binding.TvDescripcion.setText(p.getDescripcion());
+        holder.binding.TvPrecio.setText("$ " + p.getPrecio());
 
     }
 
@@ -54,9 +55,9 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
 
     public class ViewHolderProducto extends RecyclerView.ViewHolder{
 
-        ItemListarBinding binding;
+        ItemProductoBinding binding;
 
-        public ViewHolderProducto(ItemListarBinding binding) {
+        public ViewHolderProducto(ItemProductoBinding binding) {
             super (binding.getRoot());
 
             this.binding = binding;
