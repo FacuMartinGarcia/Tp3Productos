@@ -2,25 +2,17 @@ package com.example.tp3productos.modelo;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ProductoRepository {
 
-    // atributo estatico para guardar la unica instancia de la clase
-
     private static ProductoRepository instance;
+    private final List<Producto> listaProductos = new ArrayList<>();
 
-    private final List<Producto> listaProductos;
     private ProductoRepository() {
-        this.listaProductos = new ArrayList<>();
         cargarDatosPrueba();
     }
 
-    // metodo estatico GLOBAL:
-    // Es la única forma de acceder al repositorio.
-    // Si la instancia no existe, la crea;
-    // si ya existe, devuelve la misma.
     public static ProductoRepository getInstance() {
         if (instance == null) {
             instance = new ProductoRepository();
@@ -29,6 +21,8 @@ public class ProductoRepository {
     }
 
     private void cargarDatosPrueba() {
+        if (!listaProductos.isEmpty()) return; // Evita duplicados si ya se cargaron
+
         listaProductos.add(new Producto(101, "AZÚCAR LEDESMA 1KG", 1200.50));
         listaProductos.add(new Producto(102, "LECHE ENTERA LA SERENÍSIMA", 1500.00));
         listaProductos.add(new Producto(103, "YERBA MATE PLAYADITO 1KG", 3800.00));
@@ -42,39 +36,27 @@ public class ProductoRepository {
     }
 
     public boolean agregarProducto(Producto nuevoProducto) {
-
-            String descMayus = nuevoProducto.getDescripcion().toUpperCase().trim();
-            nuevoProducto.setDescripcion(descMayus);
-
-            for (Producto p : listaProductos) {
+        // Validación de código duplicado
+        for (Producto p : listaProductos) {
             if (p.getCodigo() == nuevoProducto.getCodigo()) {
                 return false;
             }
         }
 
+        // Normalizar descripción
+        nuevoProducto.setDescripcion(nuevoProducto.getDescripcion().trim().toUpperCase());
         listaProductos.add(nuevoProducto);
         return true;
     }
 
     public List<Producto> obtenerProductosOrdenados() {
         List<Producto> copia = new ArrayList<>(listaProductos);
-        Collections.sort(copia, new Comparator<Producto>() {
-            @Override
-            public int compare(Producto p1, Producto p2) {
-                return p1.getDescripcion().compareToIgnoreCase(p2.getDescripcion());
-            }
-        });
+        Collections.sort(copia, (p1, p2) ->
+                p1.getDescripcion().compareToIgnoreCase(p2.getDescripcion()));
         return copia;
     }
 
     public void borrarTodo() {
         listaProductos.clear();
-    }
-
-    public Producto buscarPorCodigo(int codigo) {
-        for (Producto p : listaProductos) {
-            if (p.getCodigo() == codigo) return p;
-        }
-        return null;
     }
 }

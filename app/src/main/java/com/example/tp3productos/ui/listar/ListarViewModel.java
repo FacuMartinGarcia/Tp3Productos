@@ -11,21 +11,32 @@ import java.util.List;
 
 public class ListarViewModel extends ViewModel {
 
-    // traemos la instancia unica del repositorio
     private final ProductoRepository repository = ProductoRepository.getInstance();
-
-    private final MutableLiveData<List<Producto>> mProductos = new MutableLiveData<>();
+    private final MutableLiveData<List<Producto>> productosLiveData = new MutableLiveData<>();
 
     public ListarViewModel() {
-        cargarProductos();
+        cargarProductos();   // Carga inicial
     }
 
+    /**
+     * Carga la lista ordenada desde el Repository
+     */
     public void cargarProductos() {
         List<Producto> listaActualizada = repository.obtenerProductosOrdenados();
-        mProductos.setValue(listaActualizada);
+        productosLiveData.setValue(listaActualizada);
     }
 
+    /**
+     * Devuelve LiveData para que el Fragment observe cambios
+     */
     public LiveData<List<Producto>> getProductos() {
-        return mProductos;
+        return productosLiveData;
+    }
+
+    /**
+     * Método para forzar la actualización (útil cuando se agrega un producto desde otro fragment)
+     */
+    public void refrescarLista() {
+        cargarProductos();
     }
 }

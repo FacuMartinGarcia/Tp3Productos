@@ -10,8 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.tp3productos.databinding.FragmentListarBinding;
 import com.example.tp3productos.ui.ProductoAdapter;
+
 import java.util.ArrayList;
 
 public class ListarFragment extends Fragment {
@@ -20,20 +22,24 @@ public class ListarFragment extends Fragment {
     private ListarViewModel listarViewModel;
     private ProductoAdapter adapter;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentListarBinding.inflate(inflater, container, false);
 
+        // Configuración del RecyclerView
         adapter = new ProductoAdapter(new ArrayList<>());
         binding.rvLista.setAdapter(adapter);
-        binding.rvLista.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.rvLista.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         listarViewModel = new ViewModelProvider(this).get(ListarViewModel.class);
 
+        // Observamos cambios en la lista
         listarViewModel.getProductos().observe(getViewLifecycleOwner(), productos -> {
-            adapter.setProductos(productos);
-            adapter.notifyDataSetChanged(); // Refrescae el recyclerView
+            if (productos != null) {
+                adapter.setProductos(productos);
+            }
         });
 
         return binding.getRoot();
@@ -42,7 +48,8 @@ public class ListarFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        listarViewModel.cargarProductos();
+        // Refrescamos la lista cada vez que volvemos al fragment (importante después de agregar)
+        listarViewModel.refrescarLista();
     }
 
     @Override
