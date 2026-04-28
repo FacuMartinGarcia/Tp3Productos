@@ -4,35 +4,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.ListAdapter;
-import androidx.recyclerview.widget.RecyclerView;
-
-
-import com.example.tp3productos.MainActivity;
 import com.example.tp3productos.databinding.FragmentListarBinding;
-import com.example.tp3productos.R;
-import com.example.tp3productos.databinding.ItemProductoBinding;
-import com.example.tp3productos.modelo.Producto;
 import com.example.tp3productos.ui.ProductoAdapter;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class ListarFragment extends Fragment {
 
     private FragmentListarBinding binding;
+    private ListarViewModel listarViewModel;
     private ProductoAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -44,13 +29,20 @@ public class ListarFragment extends Fragment {
         binding.rvLista.setAdapter(adapter);
         binding.rvLista.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        List<Producto> lista = MainActivity.productos;
+        listarViewModel = new ViewModelProvider(this).get(ListarViewModel.class);
 
-        Collections.sort(lista, (a, b) -> a.getDescripcion().compareToIgnoreCase(b.getDescripcion()));
-
-        adapter.setProductos(lista);
+        listarViewModel.getProductos().observe(getViewLifecycleOwner(), productos -> {
+            adapter.setProductos(productos);
+            adapter.notifyDataSetChanged(); // Refrescae el recyclerView
+        });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        listarViewModel.cargarProductos();
     }
 
     @Override

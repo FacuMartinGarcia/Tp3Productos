@@ -1,7 +1,5 @@
 package com.example.tp3productos.ui.cargar;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.tp3productos.databinding.FragmentCargarBinding;
 
-import com.example.tp3productos.R;
+import com.example.tp3productos.databinding.FragmentCargarBinding;
 
 public class CargarFragment extends Fragment {
 
@@ -24,6 +21,7 @@ public class CargarFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         binding = FragmentCargarBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -32,9 +30,9 @@ public class CargarFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         viewModel = new ViewModelProvider(this).get(CargarViewModel.class);
 
-        // Observers
         viewModel.getMensaje().observe(getViewLifecycleOwner(), mensaje -> {
             if (mensaje != null) {
                 Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show();
@@ -44,17 +42,24 @@ public class CargarFragment extends Fragment {
 
         viewModel.getOperacionExitosa().observe(getViewLifecycleOwner(), exitosa -> {
             if (Boolean.TRUE.equals(exitosa)) {
-                // Limpiar formulario después de guardar correctamente
                 limpiarFormulario();
             }
         });
 
-        // Listener del botón Guardar
         binding.btnGuardar.setOnClickListener(v -> {
+            String sCodigo = binding.etCodigo.getText().toString().trim();
+            String descripcion = binding.etDescripcion.getText().toString().trim();
+            String sPrecio = binding.etPrecio.getText().toString().trim();
+
+
+            if (sCodigo.isEmpty() || descripcion.isEmpty() || sPrecio.isEmpty()) {
+                Toast.makeText(requireContext(), "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             try {
-                int codigo = Integer.parseInt(binding.etCodigo.getText().toString().trim());
-                String descripcion = binding.etDescripcion.getText().toString().trim();
-                double precio = Double.parseDouble(binding.etPrecio.getText().toString().trim());
+                int codigo = Integer.parseInt(sCodigo);
+                double precio = Double.parseDouble(sPrecio);
 
                 viewModel.agregarProducto(codigo, descripcion, precio);
 
@@ -76,5 +81,4 @@ public class CargarFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }

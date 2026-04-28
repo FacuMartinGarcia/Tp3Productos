@@ -5,8 +5,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.tp3productos.modelo.Producto;
+import com.example.tp3productos.modelo.ProductoRepository; // IMPORTANTE
 
 public class CargarViewModel extends ViewModel {
+    // traemos la instancia unica del repositorio
+    private final ProductoRepository repository = ProductoRepository.getInstance();
+
     private final MutableLiveData<String> mensaje = new MutableLiveData<>();
     private final MutableLiveData<Boolean> operacionExitosa = new MutableLiveData<>();
 
@@ -18,12 +22,7 @@ public class CargarViewModel extends ViewModel {
         return operacionExitosa;
     }
 
-    /**
-     * Intenta agregar un nuevo producto después de validar los datos
-     */
     public void agregarProducto(int codigo, String descripcion, double precio) {
-
-        // Validación 1: Campos vacíos
         if (descripcion == null || descripcion.trim().isEmpty()) {
             mensaje.setValue("La descripción no puede estar vacía");
             operacionExitosa.setValue(false);
@@ -36,11 +35,9 @@ public class CargarViewModel extends ViewModel {
             return;
         }
 
-        // Crear el producto
         Producto nuevoProducto = new Producto(codigo, descripcion.trim(), precio);
 
-        // Validación 2: Código no repetido (usando el método del modelo)
-        boolean agregado = Producto.agregarProducto(nuevoProducto);
+        boolean agregado = repository.agregarProducto(nuevoProducto);
 
         if (agregado) {
             mensaje.setValue("Producto agregado correctamente");
@@ -51,9 +48,6 @@ public class CargarViewModel extends ViewModel {
         }
     }
 
-    /**
-     * Limpia los mensajes después de mostrarlos
-     */
     public void limpiarMensajes() {
         mensaje.setValue(null);
         operacionExitosa.setValue(null);

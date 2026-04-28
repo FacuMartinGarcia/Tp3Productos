@@ -4,23 +4,28 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
+import com.example.tp3productos.modelo.Producto;
+import com.example.tp3productos.modelo.ProductoRepository;
+
 import java.util.List;
 
 public class ListarViewModel extends ViewModel {
 
-    private final MutableLiveData<List<String>> mTexts;
+    // traemos la instancia unica del repositorio
+    private final ProductoRepository repository = ProductoRepository.getInstance();
+
+    private final MutableLiveData<List<Producto>> mProductos = new MutableLiveData<>();
 
     public ListarViewModel() {
-        mTexts = new MutableLiveData<>();
-        List<String> texts = new ArrayList<>();
-        for (int i = 1; i <= 16; i++) {
-            texts.add("Este es el producto # " + i);
-        }
-        mTexts.setValue(texts);
+        cargarProductos();
     }
 
-    public LiveData<List<String>> getTexts() {
-        return mTexts;
+    public void cargarProductos() {
+        List<Producto> listaActualizada = repository.obtenerProductosOrdenados();
+        mProductos.setValue(listaActualizada);
+    }
+
+    public LiveData<List<Producto>> getProductos() {
+        return mProductos;
     }
 }
