@@ -68,9 +68,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         // NAVEGACION DEL BOTON EN FRAGMENT LISTAR
-
         binding.appBarMain.fab.setOnClickListener(v -> {
-            binding.appBarMain.contentMain.bottomNavView.setSelectedItemId(R.id.nav_cargar);
+            // 1. Verificamos si la barra inferior existe en esta pantalla (vertical)
+            if (binding.appBarMain.contentMain.bottomNavView != null) {
+                binding.appBarMain.contentMain.bottomNavView.setSelectedItemId(R.id.nav_cargar);
+            } else {
+                // 2. Si NO existe (pantalla horizontal/w600dp), navegamos directo
+                navController.navigate(R.id.nav_cargar);
+            }
         });
 
 
