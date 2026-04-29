@@ -43,7 +43,7 @@ public class CargarViewModel extends ViewModel {
             mensaje.setValue("Producto agregado correctamente");
             operacionExitosa.setValue(true);
         } else {
-            mensaje.setValue("Error: Ya existe un producto con ese código");
+            mensaje.setValue("Error: Ya existe un producto con ese código ó descripción");
             operacionExitosa.setValue(false);
         }
     }

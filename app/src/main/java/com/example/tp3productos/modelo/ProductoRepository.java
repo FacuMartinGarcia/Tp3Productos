@@ -3,6 +3,7 @@ package com.example.tp3productos.modelo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class ProductoRepository {
 
@@ -36,17 +37,23 @@ public class ProductoRepository {
     }
 
     public boolean agregarProducto(Producto nuevoProducto) {
-        // Validación de código duplicado
+        String nuevaDesc = nuevoProducto.getDescripcion()
+                .trim()
+                .toUpperCase();
+
         for (Producto p : listaProductos) {
-            if (p.getCodigo() == nuevoProducto.getCodigo()) {
+            String descExistente = p.getDescripcion() == null ? "" : p.getDescripcion();
+
+            if (p.getCodigo() == nuevoProducto.getCodigo() ||
+                    descExistente.equals(nuevaDesc)) {
                 return false;
             }
         }
 
-        // Normalizar descripción
-        nuevoProducto.setDescripcion(nuevoProducto.getDescripcion().trim().toUpperCase());
+        nuevoProducto.setDescripcion(nuevaDesc);
         listaProductos.add(nuevoProducto);
         return true;
+
     }
 
     public List<Producto> obtenerProductosOrdenados() {

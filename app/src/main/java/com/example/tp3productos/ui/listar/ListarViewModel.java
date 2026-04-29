@@ -18,24 +18,15 @@ public class ListarViewModel extends ViewModel {
         cargarProductos();   // Carga inicial
     }
 
-    /**
-     * Carga la lista ordenada desde el Repository
-     */
     public void cargarProductos() {
         List<Producto> listaActualizada = repository.obtenerProductosOrdenados();
         productosLiveData.setValue(listaActualizada);
     }
 
-    /**
-     * Devuelve LiveData para que el Fragment observe cambios
-     */
     public LiveData<List<Producto>> getProductos() {
         return productosLiveData;
     }
 
-    /**
-     * Método para forzar la actualización (útil cuando se agrega un producto desde otro fragment)
-     */
     public void refrescarLista() {
         cargarProductos();
     }
