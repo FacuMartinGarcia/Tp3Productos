@@ -57,10 +57,11 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-
+        // Menu lateral
         if (binding.navView != null) {
             NavigationUI.setupWithNavController(binding.navView, navController);
         }
+        //Menu inferior
         if (binding.appBarMain.contentMain.bottomNavView != null) {
             NavigationUI.setupWithNavController(binding.appBarMain.contentMain.bottomNavView, navController);
         }

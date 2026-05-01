@@ -1,8 +1,7 @@
-package com.example.tp3productos.ui;
+package com.example.tp3productos.ui.listar;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

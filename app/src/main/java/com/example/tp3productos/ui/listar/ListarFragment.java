@@ -6,13 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.tp3productos.databinding.FragmentListarBinding;
-import com.example.tp3productos.ui.ProductoAdapter;
 
 import java.util.ArrayList;
 
@@ -44,14 +42,6 @@ public class ListarFragment extends Fragment {
 
         return binding.getRoot();
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Refrescamos la lista cada vez que volvemos al fragment (importante después de agregar)
-        listarViewModel.refrescarLista();
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
