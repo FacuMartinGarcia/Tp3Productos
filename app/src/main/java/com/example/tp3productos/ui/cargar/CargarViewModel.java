@@ -22,9 +22,32 @@ public class CargarViewModel extends ViewModel {
         return operacionExitosa;
     }
 
-    public void agregarProducto(int codigo, String descripcion, double precio) {
-        if (descripcion == null || descripcion.trim().isEmpty()) {
-            mensaje.setValue("La descripción no puede estar vacía");
+    public void agregarProducto(String sCodigo, String descripcion, String sPrecio) {
+
+        if (sCodigo == null || sCodigo.trim().isEmpty() ||
+                descripcion == null || descripcion.trim().isEmpty() ||
+                sPrecio == null || sPrecio.trim().isEmpty()) {
+            mensaje.setValue("Por favor, complete todos los campos");
+            operacionExitosa.setValue(false);
+            return;
+        }
+
+        int codigo;
+        double precio;
+
+        try {
+            codigo = Integer.parseInt(sCodigo.trim());
+        } catch (NumberFormatException e) {
+            mensaje.setValue("El código debe ser un número entero válido");
+            operacionExitosa.setValue(false);
+            return;
+        }
+
+
+        try {
+            precio = Double.parseDouble(sPrecio.trim());
+        } catch (NumberFormatException e) {
+            mensaje.setValue("El precio debe ser un número válido");
             operacionExitosa.setValue(false);
             return;
         }
@@ -36,14 +59,13 @@ public class CargarViewModel extends ViewModel {
         }
 
         Producto nuevoProducto = new Producto(codigo, descripcion.trim(), precio);
-
         boolean agregado = repository.agregarProducto(nuevoProducto);
 
         if (agregado) {
-            mensaje.setValue("Producto agregado correctamente");
+            mensaje.setValue("Producto agregado! Volviendo al listado...");
             operacionExitosa.setValue(true);
         } else {
-            mensaje.setValue("Error: Ya existe un producto con ese código ó descripción");
+            mensaje.setValue("Error: Ya existe un producto con ese código o descripción");
             operacionExitosa.setValue(false);
         }
     }

@@ -1,6 +1,8 @@
 package com.example.tp3productos.ui.cargar;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
+import com.example.tp3productos.R;
 import com.example.tp3productos.databinding.FragmentCargarBinding;
 
 public class CargarFragment extends Fragment {
@@ -43,6 +47,12 @@ public class CargarFragment extends Fragment {
         viewModel.getOperacionExitosa().observe(getViewLifecycleOwner(), exitosa -> {
             if (Boolean.TRUE.equals(exitosa)) {
                 limpiarFormulario();
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    if (isAdded() && getView() != null) {
+                        Navigation.findNavController(getView())
+                                .navigate(R.id.action_nav_cargar_to_nav_listar);
+                    }
+                }, 2000);
             }
         });
 
@@ -50,22 +60,7 @@ public class CargarFragment extends Fragment {
             String sCodigo = binding.etCodigo.getText().toString().trim();
             String descripcion = binding.etDescripcion.getText().toString().trim();
             String sPrecio = binding.etPrecio.getText().toString().trim();
-
-
-            if (sCodigo.isEmpty() || descripcion.isEmpty() || sPrecio.isEmpty()) {
-                Toast.makeText(requireContext(), "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            try {
-                int codigo = Integer.parseInt(sCodigo);
-                double precio = Double.parseDouble(sPrecio);
-
-                viewModel.agregarProducto(codigo, descripcion, precio);
-
-            } catch (NumberFormatException e) {
-                Toast.makeText(requireContext(), "Ingrese valores numéricos válidos", Toast.LENGTH_SHORT).show();
-            }
+            viewModel.agregarProducto(sCodigo, descripcion, sPrecio);
         });
     }
 
