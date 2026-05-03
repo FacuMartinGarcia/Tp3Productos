@@ -47,7 +47,7 @@ La aplicación utiliza un menú lateral navegable (Navigation Drawer) que permit
 
 ## 🚀 Requisitos de Entrega
 
-- **Video de Funcionamiento:** [Link al video de YouTube/Drive] (Máx. 3 minutos).
+- **Video de Funcionamiento:** https://youtu.be/tAw871RSgOg
 - **Código Fuente:** Repositorio alojado en GitHub.
 
 ---
